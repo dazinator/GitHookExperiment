@@ -8,6 +8,8 @@ dotnet new gitignore
 dotnet new tool-manifest
 dotnet tool install -g dotnet-script
 mkdir .githooks
+git add *
+git commit -m "initial commit"
 ```
 
 ## Debugging
