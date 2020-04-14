@@ -61,7 +61,7 @@ pre-commit hook
 ## Example skeleton git hook
 
 
-Here is an example of a git "pre-commit" hook that uses C# script:
+Here is an example of a git "pre-commit" hook that uses C# script. You must have installed `dotnet-script` on your environment with `dotnet tool install -g dotnet-script` first.
 
 ```
 #!/usr/bin/env dotnet-script
