@@ -14,7 +14,7 @@ git commit -m "initial commit"
 
 ## Debugging
 
-To debug, open in VS Code (I have included launchSettings in the repo) set a breakpoint in the main.csx script and start debugging.
+To debug, open in VS Code (I have included launchSettings in the repo) set a breakpoint in the main.csx script and start debugging. The script is just an experiment and it calls GitVersion and writes to a local version.yml file.
 
 
 ## Run as a git commit hook
