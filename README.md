@@ -56,3 +56,35 @@ Or
 ```
 git --no-pager show -1
 ```
+
+## Auto pushing notes
+
+Notes are a seperate branch that must be pushed to the server seperately.
+For convenience you can set up a `git alias` so that you can always push notes when pushing the current branch:
+
+Run this command:
+
+```
+git config --global alias.push-notes "!git push origin refs/notes/* && git push"
+
+```
+
+You can now execute:
+
+```
+git push-notes
+```
+
+## Auto fetching notes
+
+This is probably going to very useful for the build server.
+If this idea / proof of concept pans out, GitVersion will probably be amended in the future so that its branch normalization logic will automatically update the refspecs so when fetching, notes will automatically be included. To do this yourself, update your refspec in the /.git/config file to also fetch notes whenever fetching from the remote:
+
+```
+[remote "origin"]
+	fetch = +refs/notes/*:refs/notes/*
+	fetch = +refs/heads/*:refs/remotes/origin/*
+        # omitted for brevity
+```
+
+
