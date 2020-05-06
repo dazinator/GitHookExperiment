@@ -18,15 +18,24 @@ git commit -m "initial commit"
 
 ## Debugging
 
-To debug, open the "src" folder in VS Code (I have included launchSettings and workspace settings in the repo) set a breakpoint in the `main.csx` script and start debugging using the ".NET Script Debug" profile. The script is just an experiment and it calls GitVersion.exe and then converts the json variables to yml (I had a hardtime committing json as a note), then adds it as a git note to the current repo for the current commit.
+To debug:
+- Open the "src" folder in VS Code.
+- Set a breakpoint in the `post-commit.csx` script, and start debugging using the ".NET Script Debug" profile.
+
+The `post-commit.csx` script calls GitVersion.exe and then converts the json variables to yml (I had a hardtime committing json as a note), then adds it as a git note to the current repo for the current commit.
 
 ## Run as a git commit hook
 
 Debugging the script in VS Code is all well and good, but you want to see it execute as a proper git post commit hook right?
 
 1. Install the [filewatcher](https://marketplace.visualstudio.com/items?itemName=appulate.filewatcher) extension for VS Code.
-2. Save a change to the `main.csx` file - it will automatically be copied to `.git/hooks/post-commit` thanks to filewatcher, and the vscode settings.json.
-3. Commit your change! This will now trigger the post-commit hook! You will see the output in VS Code output window. This is now running the script as a proper git post commit hook.
+2. Save a change to the `post-commit.csx` file - it will automatically be copied to the local `.git/hooks/post-commit` thanks to filewatcher, and the vscode settings.json.
+3. Commit your change the repo! This will now trigger the post-commit hook! You will see the output in VS Code output window (select git from the dropdown). This is now running the script as a proper git post commit hook.
+
+Also this speeds up development:
+
+1. Make a change to the `post-commit.csx` and save it.
+2. Commit it to the repo - you will see it run!
  
 ## How do I see the note?
 
