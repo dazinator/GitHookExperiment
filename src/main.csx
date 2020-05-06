@@ -1,4 +1,10 @@
 #!/usr/bin/env dotnet-script
+#r "nuget: Newtonsoft.Json, 12.0.3"
+#r "nuget: YamlDotNet, 8.1.1"
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using YamlDotNet;
 
 //Create process
 Console.WriteLine("gitversion hook running");
@@ -20,14 +26,23 @@ using(var gitVersionProcess = new System.Diagnostics.Process())
     gitVersionProcess.WaitForExit();
 }
 
-Console.WriteLine(versionJson);
- 
-if(!string.IsNullOrWhiteSpace(versionJson))
+dynamic variablesObject = JsonConvert.DeserializeObject(versionJson);
+
+var yamlSerialiser = new YamlDotNet.Serialization.Serializer();
+string variablesYml ="";
+using (var writer = new StringWriter())
+{
+    yamlSerialiser.Serialize(writer, variablesObject);
+    variablesYml = writer.ToString();
+}
+
+Console.WriteLine(variablesYml);
+if(!string.IsNullOrWhiteSpace(variablesYml))
 {
     using(var gitNotesProcess = new System.Diagnostics.Process())
     {
         gitNotesProcess.StartInfo.FileName = "git";
-        gitNotesProcess.StartInfo.Arguments = $@"notes add -m '{versionJson}'";
+        gitNotesProcess.StartInfo.Arguments = $@"notes add -m ""{variablesYml}""";
         gitNotesProcess.StartInfo.UseShellExecute = false;
         gitNotesProcess.StartInfo.RedirectStandardOutput = true;   
         //Optional
