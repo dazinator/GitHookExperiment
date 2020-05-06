@@ -1,32 +1,50 @@
 #!/usr/bin/env dotnet-script
 
 //Create process
-System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
+Console.WriteLine("gitversion hook running");
+string versionJson = string.Empty;
 
-//strCommand is path and file name of command to run
-pProcess.StartInfo.FileName = "gitversion";
+using(var gitVersionProcess = new System.Diagnostics.Process())
+{
+    gitVersionProcess.StartInfo.FileName = "gitversion";
+    gitVersionProcess.StartInfo.Arguments = "/output json";
+    gitVersionProcess.StartInfo.UseShellExecute = false;
+    gitVersionProcess.StartInfo.RedirectStandardOutput = true;   
+    //Optional
+    //pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
+    gitVersionProcess.Start();
+    //Get program output
+    versionJson = gitVersionProcess.StandardOutput.ReadToEnd();
 
-//strCommandParameters are parameters to pass to program
-pProcess.StartInfo.Arguments = "/output json";
+    //Wait for process to finish
+    gitVersionProcess.WaitForExit();
+}
 
-pProcess.StartInfo.UseShellExecute = false;
+Console.WriteLine(versionJson);
 
-//Set output of program to be written to process output stream
-pProcess.StartInfo.RedirectStandardOutput = true;   
+if(!string.IsNullOrWhiteSpace(versionJson))
+{
+    using(var gitNotesProcess = new System.Diagnostics.Process())
+    {
+        gitNotesProcess.StartInfo.FileName = "git";
+        gitNotesProcess.StartInfo.Arguments = $@"notes add -m ""{versionJson}""";
+        gitNotesProcess.StartInfo.UseShellExecute = false;
+        gitNotesProcess.StartInfo.RedirectStandardOutput = true;   
+        //Optional
+        //pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
+        gitNotesProcess.Start();
+        //Get program output
+        versionJson = gitNotesProcess.StandardOutput.ReadToEnd();
 
-//Optional
-//pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
+        //Wait for process to finish
+        gitNotesProcess.WaitForExit();
+    }
+}
 
-//Start the process
-pProcess.Start();
 
-//Get program output
-string strOutput = pProcess.StandardOutput.ReadToEnd();
 
-//Wait for process to finish
-pProcess.WaitForExit();
 
-File.WriteAllText("version.yml", strOutput);
+// Add version as post commit
 
-Console.WriteLine("pre-commit hook");
-Console.WriteLine(strOutput);
+// File.WriteAllText("version.yml", strOutput);
+
