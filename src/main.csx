@@ -35,8 +35,6 @@ dynamic deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(versio
 var serializer = new YamlDotNet.Serialization.Serializer();
 string yaml = serializer.Serialize(deserializedObject);
 //var yamlSerialiser = new YamlDotNet.Serialization.Serializer();
-
-Console.WriteLine(versionJson);
 Console.WriteLine(yaml);
 if(!string.IsNullOrWhiteSpace(yaml))
 {
