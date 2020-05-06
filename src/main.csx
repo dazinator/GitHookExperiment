@@ -27,7 +27,7 @@ if(!string.IsNullOrWhiteSpace(versionJson))
     using(var gitNotesProcess = new System.Diagnostics.Process())
     {
         gitNotesProcess.StartInfo.FileName = "git";
-        gitNotesProcess.StartInfo.Arguments = $@"notes add -m ""{versionJson}""";
+        gitNotesProcess.StartInfo.Arguments = $@"notes add -m '{versionJson}'";
         gitNotesProcess.StartInfo.UseShellExecute = false;
         gitNotesProcess.StartInfo.RedirectStandardOutput = true;   
         //Optional
