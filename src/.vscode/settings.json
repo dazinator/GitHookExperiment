@@ -1,0 +1,10 @@
+{
+    "filewatcher.commands": [
+        {
+            "match": "main.csx",
+            "isAsync": true,
+            "cmd": "copy /y ${file} ${workspaceRoot}\\..\\.git\\hooks\\post-commit",
+            "event": "onFileChange"
+        }
+    ]
+}

@@ -9,7 +9,7 @@ using YamlDotNet;
 //Create process
 Console.WriteLine("gitversion hook running");
 string versionJson = string.Empty;
-
+  
 using(var gitVersionProcess = new System.Diagnostics.Process())
 {
     gitVersionProcess.StartInfo.FileName = "gitversion";
@@ -24,6 +24,7 @@ using(var gitVersionProcess = new System.Diagnostics.Process())
 
     //Wait for process to finish
     gitVersionProcess.WaitForExit();
+
 }
 
 dynamic variablesObject = JsonConvert.DeserializeObject(versionJson);

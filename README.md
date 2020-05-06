@@ -11,52 +11,23 @@ mkdir .githooks
 git add *
 git commit -m "initial commit"
 ```
+## Prerequisites
+
+1. VS Code for debugging purposes.
+1. You must have installed `dotnet-script` on your environment with `dotnet tool install -g dotnet-script` for the git commit hook to execute.
 
 ## Debugging
 
-To debug, open in VS Code (I have included launchSettings in the repo) set a breakpoint in the main.csx script and start debugging. The script is just an experiment and it calls GitVersion and writes to a local version.yml file.
-
+To debug, open the "src" folder in VS Code (I have included launchSettings and workspace settings in the repo) set a breakpoint in the `main.csx` script and start debugging using the ".NET Script Debug" profile. The script is just an experiment and it calls GitVersion.exe and then converts the json variables to yml (I had a hardtime committing json as a note), then adds it as a git note to the current repo for the current commit.
 
 ## Run as a git commit hook
 
-Copy the contents of main.csx to .git/hooks/pre-commit (or relevent hook you want to run this on). Then perform a git commit in the command line and watch the output:
+Debugging the script in VS Code is all well and good, but you want to see it execute as a proper git post commit hook right?
 
-```
-PS D:\git-hooks-example> git commit -m "added files"
-pre-commit hook
-{
-  "Major":0,
-  "Minor":1,
-  "Patch":0,
-  "PreReleaseTag":"",
-  "PreReleaseTagWithDash":"",
-  "PreReleaseLabel":"",
-  "PreReleaseNumber":"",
-  "BuildMetaData":0,
-  "BuildMetaDataPadded":"0000",
-  "FullBuildMetaData":"0.Branch.master.Sha.db8fb0d4ac2b9c898d3356838a372789ca3fffa9",
-  "MajorMinorPatch":"0.1.0",
-  "SemVer":"0.1.0",
-  "LegacySemVer":"0.1.0",
-  "LegacySemVerPadded":"0.1.0",
-  "AssemblySemVer":"0.1.0.0",
-  "FullSemVer":"0.1.0+0",
-  "InformationalVersion":"0.1.0+0.Branch.master.Sha.db8fb0d4ac2b9c898d3356838a372789ca3fffa9",
-  "BranchName":"master",
-  "Sha":"db8fb0d4ac2b9c898d3356838a372789ca3fffa9",
-  "NuGetVersionV2":"0.1.0",
-  "NuGetVersion":"0.1.0",
-  "CommitsSinceVersionSource":0,
-  "CommitsSinceVersionSourcePadded":"0000",
-  "CommitDate":"2020-04-14"
-}
-
-[master eacc94a] added files
- 4 files changed, 82 insertions(+)
- create mode 100644 src/.vscode/launch.json
- create mode 100644 src/main.csx
- create mode 100644 src/omnisharp.json
- create mode 100644 src/version.yml
+1. Install the [filewatcher](https://marketplace.visualstudio.com/items?itemName=appulate.filewatcher) extension for VS Code.
+2. Save a change to the `main.csx` file - it will automatically be copied to `.git/hooks/post-commit` thanks to filewatcher, and the vscode settings.json.
+3. Commit your change! This will now trigger the post-commit hook! You will see the output in VS Code output window. This is now running the script as a proper git post commit hook.
+ 
 ```
 ## Example skeleton git hook
 
