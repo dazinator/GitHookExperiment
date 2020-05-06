@@ -21,7 +21,7 @@ using(var gitVersionProcess = new System.Diagnostics.Process())
 }
 
 Console.WriteLine(versionJson);
-
+ 
 if(!string.IsNullOrWhiteSpace(versionJson))
 {
     using(var gitNotesProcess = new System.Diagnostics.Process())
