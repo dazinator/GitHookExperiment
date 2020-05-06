@@ -28,14 +28,31 @@ Debugging the script in VS Code is all well and good, but you want to see it exe
 2. Save a change to the `main.csx` file - it will automatically be copied to `.git/hooks/post-commit` thanks to filewatcher, and the vscode settings.json.
 3. Commit your change! This will now trigger the post-commit hook! You will see the output in VS Code output window. This is now running the script as a proper git post commit hook.
  
-```
-## Example skeleton git hook
+## How do I see the note?
 
-
-Here is an example of a git "pre-commit" hook that uses C# script. You must have installed `dotnet-script` on your environment with `dotnet tool install -g dotnet-script` first.
+Multiple ways:
 
 ```
-#!/usr/bin/env dotnet-script
+git notes show
+```
 
-Console.WriteLine("pre-commit hook");
+![git notes show](/images/gitnotes.PNG)
+
+Or you can see it in git log:
+
+```
+git --no-pager show -1
+
+``` 
+
+and it can be included in pretty printed logs using the `%N` parameter:
+
+```
+git --no-pager log -1 --pretty=%N
+```
+
+Or
+
+```
+git --no-pager show -1
 ```
