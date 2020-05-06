@@ -3,6 +3,7 @@
 #r "nuget: YamlDotNet, 8.1.1"
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using YamlDotNet;
 
@@ -27,23 +28,22 @@ using(var gitVersionProcess = new System.Diagnostics.Process())
 
 }
 
-dynamic variablesObject = JsonConvert.DeserializeObject(versionJson);
+//dynamic variablesObject = JsonConvert.DeserializeObject(versionJson);
+var expConverter = new ExpandoObjectConverter();
+dynamic deserializedObject = JsonConvert.DeserializeObject<ExpandoObject>(versionJson, expConverter);
 
-var yamlSerialiser = new YamlDotNet.Serialization.Serializer();
-string variablesYml ="";
-using (var writer = new StringWriter())
-{
-    yamlSerialiser.Serialize(writer, variablesObject);
-    variablesYml = writer.ToString();
-}
+var serializer = new YamlDotNet.Serialization.Serializer();
+string yaml = serializer.Serialize(deserializedObject);
+//var yamlSerialiser = new YamlDotNet.Serialization.Serializer();
 
-Console.WriteLine(variablesYml);
-if(!string.IsNullOrWhiteSpace(variablesYml))
+
+Console.WriteLine(yaml);
+if(!string.IsNullOrWhiteSpace(yaml))
 {
     using(var gitNotesProcess = new System.Diagnostics.Process())
     {
         gitNotesProcess.StartInfo.FileName = "git";
-        gitNotesProcess.StartInfo.Arguments = $@"notes add -m ""{variablesYml}""";
+        gitNotesProcess.StartInfo.Arguments = $@"notes add -m ""{yaml}""";
         gitNotesProcess.StartInfo.UseShellExecute = false;
         gitNotesProcess.StartInfo.RedirectStandardOutput = true;   
         //Optional
