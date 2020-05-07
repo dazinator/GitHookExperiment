@@ -64,7 +64,7 @@ if(branchName=="refs/notes/commits")
 //     gitBranchStatus.Start();
 //     //Get program output
 //     statusOutput = gitBranchStatus.StandardOutput.ReadToEnd();
-
+ 
 //     //Wait for process to finish
 //     gitBranchStatus.WaitForExit();
 // }
