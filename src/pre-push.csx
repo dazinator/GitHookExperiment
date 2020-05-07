@@ -26,7 +26,7 @@ using (var gitBranchNameProcess = new System.Diagnostics.Process())
     gitBranchNameProcess.WaitForExit();
 }
 
-var lines =  statusOutput.Split(Environment.NewLine);
+var lines =  statusOutput.Split(new string[]{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
 var branchName = lines[0];
 if(branchName=="refs/notes/commits")
 {
