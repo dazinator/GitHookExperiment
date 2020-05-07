@@ -35,40 +35,19 @@ if(branchName=="refs/notes/commits")
 
 
 // 2.
-// push notes?
+// Are there unpushed notes?
 
-// using (var gitPushNotesProcess = new System.Diagnostics.Process())
-// {
-//     gitPushNotesProcess.StartInfo.FileName = "git";
-//     gitPushNotesProcess.StartInfo.Arguments = $@"push origin refs/notes/*";
-//     gitPushNotesProcess.StartInfo.UseShellExecute = false;
-//     gitPushNotesProcess.StartInfo.RedirectStandardOutput = true;
-//     //Optional
-//     //pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
-//     gitPushNotesProcess.Start();
-//     //Get program output
-//     statusOutput = gitPushNotesProcess.StandardOutput.ReadToEnd();
+//WIP. I noticed that
+// git fetch --refmap='' origin +refs/notes/*:refs/notes/* --dry-run
+// will yield no output when the remote and the local refs/notes/commits match.
+// and will yield output like this when they don't match:
+//   + 6d724c0...a035bca refs/notes/commits -> refs/notes/commits  (forced update)
 
-//     //Wait for process to finish
-//     gitPushNotesProcess.WaitForExit();
-// }
+// Also using this refspec: +refs/notes/*:refs/notes/* seems to cause local notes branch to overwrite server branch and vice versa,
+// -- think it would be safer if there was a way to fetch refs/notes/* from the server into a remote branch like  refs/notes/origin/* and then we can merge our local refs/notes/* with that branch.
+// otherwise I don't see how it could work in a team scenario as everyone would constantly be overwriting eachother notes.
 
-// using (var gitBranchStatus = new System.Diagnostics.Process())
-// {
-//     gitBranchStatus.StartInfo.FileName = "git";
-//     gitBranchStatus.StartInfo.Arguments = $@"status";
-//     gitBranchStatus.StartInfo.UseShellExecute = false;
-//     gitBranchStatus.StartInfo.RedirectStandardOutput = true;
-//     //Optional
-//     //pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
-//     gitBranchStatus.Start();
-//     //Get program output
-//     statusOutput = gitBranchStatus.StandardOutput.ReadToEnd();
-    
-//     //Wait for process to finish
-//     gitBranchStatus.WaitForExit();
-// }
-
+// This one might also come in handy once merging of notes is set up.
 // git merge-base refs/notes/commits origin/refs/notes/commits
 
 //throw new Exception($"You can't push this branch {branchName} because the notes branch has unpushed commits. Please push those first. + {args} + {statusOutput}");
